@@ -1,4 +1,4 @@
-package com.example.phonecontactmvn;
+package com.phonecontactmvn;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
