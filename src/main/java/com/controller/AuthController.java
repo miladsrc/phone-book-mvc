@@ -1,10 +1,22 @@
 package com.controller;
 
+import com.beans.User;
+import com.service.AuthService;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
+
 @Controller
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @GetMapping("/login")
     public String showLoginForm() {
@@ -15,9 +27,9 @@ public class AuthController {
     public String login(@RequestParam String username, @RequestParam String password) {
         Optional<User> user = authService.authenticateUser(username, password);
         if (user.isPresent()) {
-            return "redirect:/user/contacts"; // به صفحه لیست کانتکت‌ها می‌رود
+            return "redirect:/user/contacts";
         }
-        return "login";
+        return "login?error=true";
     }
 
     @GetMapping("/register")
@@ -27,7 +39,14 @@ public class AuthController {
 
     @PostMapping("/register")
     public String register(@RequestParam String username, @RequestParam String password) {
-        authService.registerUser(username, password);
-        return "redirect:/login";
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            return "register?error=true";
+        }
+        User success = authService.registerUser(username, password);
+        if (success.getId() != null) {
+            return "redirect:/login";
+        }
+        return "register?error=true";
     }
 }
+
