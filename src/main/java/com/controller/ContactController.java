@@ -5,6 +5,7 @@ import com.beans.User;
 import com.service.ContactService;
 import com.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,7 +33,7 @@ public class ContactController {
         this.userService = userService;
     }
 
-    @GetMapping
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getContacts() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         com.beans.User user = userService.findByUsername(authentication.getName()).orElse(null);
@@ -43,7 +44,7 @@ public class ContactController {
         return ResponseEntity.ok(contacts);
     }
 
-    @PostMapping("/add")
+    @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addContact(@RequestParam String name, @RequestParam String phoneNumber) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         com.beans.User user = userService.findByUsername(authentication.getName()).orElse(null);
@@ -54,7 +55,7 @@ public class ContactController {
         return ResponseEntity.ok("Contact added successfully");
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping(value = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> deleteContact(@PathVariable Long id) {
         contactService.deleteContact(id);
         return ResponseEntity.ok("Contact deleted successfully");

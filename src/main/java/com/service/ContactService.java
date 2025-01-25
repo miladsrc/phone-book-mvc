@@ -21,13 +21,11 @@ public class ContactService {
     }
 
     public void addContact(User user, String name, String phoneNumber) {
-
         Contact contact = new Contact();
         contact.setName(name);
         contact.setPhoneNumber(phoneNumber);
         contact.setUser(user);
         contactRepository.save(contact);
-
     }
 
     public void deleteContact(Long contactId) {
@@ -35,9 +33,7 @@ public class ContactService {
     }
 
     public Contact getContactById(Long contactId) {
-
         return contactRepository.findById(contactId).orElse(null);
-
     }
 
 }

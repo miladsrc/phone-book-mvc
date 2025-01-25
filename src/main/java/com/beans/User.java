@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +34,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Contact> contacts;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users-roles",
+            joinColumns = @JoinColumn(name = "user-id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role-id", referencedColumnName = "id"))
+    Set<Role> roles;
 }
