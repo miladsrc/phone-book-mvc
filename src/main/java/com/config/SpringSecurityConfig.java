@@ -29,9 +29,9 @@ public class SpringSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/auth/login", "/auth/register").permitAll()
-                        .requestMatchers("/admin/**", "/contact/**").hasRole("ADMIN")//reject to admin role
-                        .requestMatchers("/user/**", "/contact/**").hasRole("USER") //reject to user role
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/admin/**", "/api/contact/**").hasRole("ADMIN")//reject to admin role
+                        .requestMatchers("/api/user/**", "/api/contact/**").hasRole("USER") //reject to user role
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

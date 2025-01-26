@@ -17,7 +17,7 @@ public class AdminService {
     }
 
     public List<User> findAllUsers() {
-        return adminRepository.findAll();
+        return adminRepository.findAllUsersWithContacts();
     }
 
     public Optional<User> findUserByUsername(String username) {

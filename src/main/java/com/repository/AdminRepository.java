@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AdminRepository extends JpaRepository<User, Integer> {
-        @Query("SELECT u FROM Users u")
-        List<User> findAllUsers();
+        @Query("SELECT u FROM User u LEFT JOIN FETCH u.contacts")
+        List<User> findAllUsersWithContacts();
         Optional<User> findByUsername(String username);
 
 }
