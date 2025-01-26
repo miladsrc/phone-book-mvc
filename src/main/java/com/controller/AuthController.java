@@ -3,11 +3,11 @@ package com.controller;
 import com.beans.User;
 import com.service.AuthService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,14 +19,14 @@ public class AuthController {
         this.authService = authService;
     }
 
-//    @PostMapping(value = "/login")
-//    public ResponseEntity<?> login(@RequestBody User user) {
-//        Optional<User> user = authService.login(username, password);
-//        if (user.isPresent()) {
-//            return ResponseEntity.ok(user.get());
-//        }
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//    }
+    @PostMapping(value = "/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        String loginMessage = authService.login(user);
+        if (loginMessage.equals("user logged successfully !")) {
+            return ResponseEntity.ok(loginMessage);
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+    }
 //
 //    @PostMapping(value = "/register")
 //    public ResponseEntity<?> register(@RequestBody User user) {

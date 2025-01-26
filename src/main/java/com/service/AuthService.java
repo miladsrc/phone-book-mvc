@@ -7,6 +7,7 @@ import com.repository.UserRepository;
 import exception.ContactAPIException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,14 +21,14 @@ import java.util.Set;
 @Service
 public class AuthService {
 
-//    private final UserRepository userRepository;
-//    private RoleRepository roleRepository;
-//    private PasswordEncoder passwordEncoder;
-//    private AuthenticationManager authenticationManager;
-//    public AuthService(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
-//
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+
+    public AuthService(UserRepository userRepository) {
+    }
+
+    //
 //    public String register(User user) {
 //
 //        if(userRepository.existsByUsername(user.getUsername())) {
@@ -48,15 +49,17 @@ public class AuthService {
 //
 //    }
 //
-//    public String login(User user) {
-//
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                user.getUsername(), user.getPassword()
-//        ));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        return "user logged successfully !";
-//
-//    }
+    public String login(User user) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return "user logged successfully !";
+        } catch (BadCredentialsException e) {
+            return "Invalid credentials";
+        }
+    }
 //
 //    public Optional<User> authenticateUser(String username, String password) {
 //        return userRepository.findByUsername(username);
