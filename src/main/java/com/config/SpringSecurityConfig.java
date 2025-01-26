@@ -17,11 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SpringSecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SpringSecurityConfig(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -29,9 +29,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auths -> auths
-                        .requestMatchers("/login", "/register").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")//reject to admin role
-                        .requestMatchers("/user/**").hasRole("USER") //reject to user role
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+                        .requestMatchers("/admin/**", "/contact/**").hasRole("ADMIN")//reject to admin role
+                        .requestMatchers("/user/**", "/contact/**").hasRole("USER") //reject to user role
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -40,10 +40,9 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return null;
+        return new BCryptPasswordEncoder();
     }
 
     @Autowired

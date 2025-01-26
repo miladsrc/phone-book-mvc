@@ -1,4 +1,4 @@
-package com.config;
+package com.security;
 
 import com.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,6 +17,21 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    public UserDetails loadUserByUsername(String username, String password) throws UsernameNotFoundException {
+        com.beans.User user = userRepository.findByUsernameAndPassword(username, password)
+                .orElseThrow(() -> new UsernameNotFoundException("user not exist by username"));
+
+        Set<SimpleGrantedAuthority> authoritySet = user.getRoles().stream()
+                .map((role) -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toSet());
+
+        return new org.springframework.security.core.userdetails.User(
+                username,
+                user.getPassword(),
+                authoritySet
+        );
     }
 
     @Override

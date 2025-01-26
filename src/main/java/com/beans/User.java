@@ -2,10 +2,8 @@ package com.beans;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.util.List;
 import java.util.Set;
 
@@ -13,30 +11,35 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 @Entity
-@Table(name = "users")
+@Table(name = "USERS")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "ID", nullable = false, unique = true)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true, length = 50)
+    @Column(name = "USERNAME", nullable = false, unique = true, length = 50)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
-
-    @Column(name = "role", nullable = false, length = 10)
-    private String role;
 
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Contact> contacts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users-roles",
-            joinColumns = @JoinColumn(name = "user-id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role-id", referencedColumnName = "id"))
+    @JoinTable(name = "USERS_ROLES",
+            joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
     Set<Role> roles;
+
+    //CONSTRUCTOR
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

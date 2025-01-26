@@ -1,9 +1,15 @@
 package com.service;
 
+import com.beans.Role;
 import com.beans.User;
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
+import exception.ContactAPIException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,47 +20,44 @@ import java.util.Set;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
-
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
     public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
-
-    public String Register(User user) {
+    public String register(User user) {
 
         //check if username exists in database
-        if(userRepository.existsBy(user.getUsername())) {
-            throw new TodoAPIException(HttpStatus.BAD_REQUEST, "Username already exists!");
+        if(userRepository.existsByUsername(user.getUsername())) {
+            throw new ContactAPIException(HttpStatus.BAD_REQUEST, "Username already exists!");
         }
-
-        //check if email exists in database
-        if(userRepository.existsByEmail(registerDTO.getEmail())){
-            throw new TodoAPIException(HttpStatus.BAD_REQUEST, "Email already exists!");
-        }
-
-        User user = User.builder()
-                .username(registerDTO.getUsername())
-                .password(passwordEncoder.encode(registerDTO.getPassword()))
-                .email(registerDTO.getEmail())
-                .name(registerDTO.getName())
+        User localUser = User.builder()
+                .username(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .contacts(user.getContacts())
                 .build();
-
-
+        //critical
         Set<Role> role = new HashSet<>();
-        Role userRole = roleRepository.findByName("ROLE_USER").get();
+        Role userRole = roleRepository.findByName("USER").get();
         role.add(userRole);
-
         user.setRoles(role);
-
         userRepository.save(user);
-
         return "User Registered Successfully !";
+
     }
 
+    public String login(User user) {
+
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                user.getUsername(), user.getPassword()
+        ));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return "user logged successfully !";
+
+    }
 
     public Optional<User> authenticateUser(String username, String password) {
         return userRepository.findByUsername(username);
