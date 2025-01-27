@@ -1,5 +1,6 @@
 package com.base.database.user.util.dto;
 
+import com.base.database.security.bean.Role;
 import lombok.*;
 
 @Getter
@@ -7,11 +8,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class UserRequestDTO {
 
-    private Long id;
     private String firstName;
     private String lastName;
+    private String username;
+    private String password;
     private String email;
-    private String role;
+    private Role role;
 }

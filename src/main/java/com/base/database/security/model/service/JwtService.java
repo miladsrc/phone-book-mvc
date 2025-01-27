@@ -64,4 +64,8 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("id", Long.class));
+    }
+
 }

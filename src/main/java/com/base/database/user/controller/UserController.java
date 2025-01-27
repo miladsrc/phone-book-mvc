@@ -1,49 +1,69 @@
 package com.base.database.user.controller;
 
 
-import com.base.database.user.util.dto.UserDto;
+import com.base.database.contact.util.service.ContactService;
+import com.base.database.security.model.service.JwtService;
+import com.base.database.user.util.dto.ContactResponseDTO;
+import com.base.database.user.util.dto.UserRequestDTO;
+import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.service.UserService;
-import com.base.database.user.util.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
-import java.util.Optional;
+
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final JwtService jwtService;
+    private final ContactService contactService;
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = userService.findByUsername(username);
-        return ResponseEntity.ok(user.orElse(null));
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
-        User user = userService.save(userDto);
-        return ResponseEntity.status(201).body(user);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
+        return new ResponseEntity<>(userService.createUser(userRequestDTO), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
+        return ResponseEntity.ok(userService.updateUser(id, userRequestDTO));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUserById(id);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+    Authentication
+    @GetMapping("/user/me")
+    public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        String username = jwtService.extractUsername(token);
+        List<ContactResponseDTO> contacts = contactService.(username);
+        return ResponseEntity.ok(contacts);
+    }
 }
+
+
 

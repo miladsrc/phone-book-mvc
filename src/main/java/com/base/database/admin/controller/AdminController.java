@@ -1,7 +1,6 @@
 package com.base.database.admin.controller;
 
 
-import com.base.database.user.util.dto.UserDto;
 import com.base.database.admin.util.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -9,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 @RestController
 @RequestMapping("/api/admin")
 @DependsOn("adminRepository")
