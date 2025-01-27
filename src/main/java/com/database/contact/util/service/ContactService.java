@@ -1,8 +1,21 @@
 package com.database.contact.util.service;
 
+import com.database.contact.util.dto.ContactDtoNameAndPhone;
 import com.database.contact.util.model.Contact;
-import com.database.user.util.model.User;
+import com.database.user.util.dto.UserDto;
 import com.database.contact.util.repository.ContactRepository;
+import com.database.user.util.model.User;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.Banner;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,19 +24,22 @@ import java.util.List;
 public class ContactService {
 
     private final ContactRepository contactRepository;
+    private final ModelMapper modelMapper;
 
-    public ContactService(ContactRepository contactRepository) {
+    @Autowired
+    public ContactService(ContactRepository contactRepository, ModelMapper modelMapper) {
         this.contactRepository = contactRepository;
+        this.modelMapper = modelMapper;
     }
 
-    public List<Contact> getContactsForUser(User user) {
-        return contactRepository.findByUser(user);
+    public List<Contact> getContactsForUser(UserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        return contactRepository.findByUser(user); // Pass the User entity to the repository
     }
 
-    public void addContact(User user, String name, String phoneNumber) {
-        Contact contact = new Contact();
-        contact.setName(name);
-        contact.setPhoneNumber(phoneNumber);
+    public void addContact(ContactDtoNameAndPhone contactDtoNameAndPhone, UserDto userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        Contact contact = modelMapper.map(contactDtoNameAndPhone, Contact.class);
         contact.setUser(user);
         contactRepository.save(contact);
     }
@@ -35,5 +51,6 @@ public class ContactService {
     public Contact getContactById(Long contactId) {
         return contactRepository.findById(contactId).orElse(null);
     }
-
 }
+
+

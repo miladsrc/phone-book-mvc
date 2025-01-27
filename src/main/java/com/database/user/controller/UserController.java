@@ -1,9 +1,16 @@
 package com.database.user.controller;
 
 
+import com.database.user.util.dto.UserDto;
 import com.database.user.util.model.User;
 import com.database.user.util.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +27,7 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @GetMapping
     public List<User> getAllUsers() {
         return userService.findAll();
@@ -28,12 +36,13 @@ public class UserController {
     @GetMapping("/username/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         Optional<User> user = userService.findByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(user.orElse(null));
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.save(user);
+    public ResponseEntity<User> createUser(@RequestBody UserDto userDto) {
+        User user = userService.save(userDto);
+        return ResponseEntity.status(201).body(user);
     }
 
     @DeleteMapping("/{id}")
@@ -42,3 +51,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 }
+

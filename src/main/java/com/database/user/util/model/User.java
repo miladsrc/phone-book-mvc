@@ -2,46 +2,91 @@ package com.database.user.util.model;
 
 
 import com.database.contact.util.model.Contact;
-import com.database.auth.util.model.Role;
+import com.security.bean.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Builder
 @Entity
 @Table(name = "USERS")
-public class User {
+public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, unique = true)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Ensure auto-generation for the ID
     private Long id;
 
-    @Column(name = "USERNAME", nullable = false, unique = true, length = 50)
+    @Column(name = "FIRST_NAME", nullable = false)
+    private String firstName;
+
+    @Column(name = "LAST_NAME", nullable = false)
+    private String lastName;
+
+    @Column(name = "USERNAME", nullable = false, unique = true)
     private String username;
 
     @Column(name = "PASSWORD", nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
-    private List<Contact> contacts;
+    @Column(name = "EMAIL", nullable = false, unique = true)
+    private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "USERS_ROLES",
-            joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID"))
-    Set<Role> roles;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ROLE", nullable = false)
+    private Role role;
 
-    //CONSTRUCTOR
+    // USER DETAILS METHODS
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Convert the role to a GrantedAuthority
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // Define your logic; for now, return true (always valid)
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // Define your logic; for now, return true (always valid)
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // Define your logic; for now, return true (always valid)
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // Define your logic; for now, return true (always enabled)
+        return true;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 }

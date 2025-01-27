@@ -1,15 +1,15 @@
 package com.database.admin.controller;
 
 
-import com.database.user.util.model.User;
+import com.database.user.util.dto.UserDto;
 import com.database.admin.util.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
@@ -21,47 +21,29 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return adminService.findAllUsers();
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> userDtos = adminService.findAllUsers();
+        return ResponseEntity.ok(userDtos);
     }
 
-    @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = adminService.findUserByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/user/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        Optional<UserDto> userDto = adminService.findUserByUsername(username);
+        return userDto.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @GetMapping("/search")
-    public Optional<User> getUsersByUsernameLike(@RequestParam String username) {
-        return adminService.findUserByUsername(username);
+    @PostMapping("/user")
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+        UserDto savedUserDto = adminService.saveUser(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDto);
     }
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User savedUser = adminService.saveUser(user);
-        return ResponseEntity.status(201).body(savedUser);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        Optional<User> existingUser = adminService.findUserByUsername(user.getUsername());
-        if (existingUser.isPresent()) {
-            user.setId(id);
-            User updatedUser = adminService.saveUser(user);
-            return ResponseEntity.ok(updatedUser);  // 200 OK
-        }
-        return ResponseEntity.notFound().build();  // 404 Not Found
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Optional<User> existingUser = adminService.findUserByUsername(id.toString());
-        if (existingUser.isPresent()) {
-            adminService.deleteUser(id);
-            return ResponseEntity.noContent().build();  // 204 No Content
-        }
-        return ResponseEntity.notFound().build();  // 404 Not Found
+        adminService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
-
 }
+
