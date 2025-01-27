@@ -1,6 +1,8 @@
-package com.beans;
+package com.database.user.util.model;
 
 
+import com.database.contact.util.model.Contact;
+import com.database.auth.util.model.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

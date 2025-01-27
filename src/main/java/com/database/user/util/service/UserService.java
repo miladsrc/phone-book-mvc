@@ -1,6 +1,7 @@
-package com.service;
+package com.database.user.util.service;
 
-import com.beans.User;
+import com.database.user.util.model.User;
+import com.database.user.util.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final com.repository.UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(com.repository.UserRepository userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

@@ -1,8 +1,8 @@
-package com.repository;
+package com.database.user.util.repository;
 
 
 
-import com.beans.User;
+import com.database.user.util.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

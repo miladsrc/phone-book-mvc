@@ -1,8 +1,8 @@
-package com.service;
+package com.database.contact.util.service;
 
-import com.beans.Contact;
-import com.beans.User;
-import com.repository.ContactRepository;
+import com.database.contact.util.model.Contact;
+import com.database.user.util.model.User;
+import com.database.contact.util.repository.ContactRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,16 +1,16 @@
-package com.controller;
+package com.database.contact.controller;
 
-import com.beans.Contact;
-import com.beans.User;
-import com.service.ContactService;
-import com.service.UserService;
+import com.database.contact.util.model.Contact;
+
+import com.database.contact.util.service.ContactService;
+import com.database.user.util.model.User;
+import com.database.user.util.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +36,7 @@ public class ContactController {
     @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> getContacts() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        com.beans.User user = userService.findByUsername(authentication.getName()).orElse(null);
+        User user = userService.findByUsername(authentication.getName()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }
@@ -47,7 +47,7 @@ public class ContactController {
     @PostMapping(value = "/add", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> addContact(@RequestParam String name, @RequestParam String phoneNumber) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        com.beans.User user = userService.findByUsername(authentication.getName()).orElse(null);
+        User user = userService.findByUsername(authentication.getName()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
         }

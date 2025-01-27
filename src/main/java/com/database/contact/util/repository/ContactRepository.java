@@ -1,7 +1,7 @@
-package com.repository;
+package com.database.contact.util.repository;
 
-import com.beans.Contact;
-import com.beans.User;
+import com.database.contact.util.model.Contact;
+import com.database.user.util.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

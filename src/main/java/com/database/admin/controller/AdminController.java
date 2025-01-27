@@ -1,8 +1,8 @@
-package com.controller;
+package com.database.admin.controller;
 
 
-import com.beans.User;
-import com.service.AdminService;
+import com.database.user.util.model.User;
+import com.database.admin.util.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

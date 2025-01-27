@@ -1,4 +1,4 @@
-package com.beans;
+package com.database.auth.util.model;
 
 import jakarta.persistence.*;
 import lombok.*;

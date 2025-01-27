@@ -1,11 +1,9 @@
-package com.beans;
+package com.database.contact.util.model;
 
 
+import com.database.user.util.model.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

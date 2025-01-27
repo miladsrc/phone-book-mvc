@@ -1,7 +1,7 @@
-package com.controller;
+package com.database.auth.controller;
 
-import com.beans.User;
-import com.service.AuthService;
+import com.database.user.util.model.User;
+import com.database.auth.util.service.AuthService;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,7 @@
 package com.security;
 
-import com.repository.UserRepository;
+import com.database.user.util.model.User;
+import com.database.user.util.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     public UserDetails loadUserByUsername(String username, String password) throws UsernameNotFoundException {
-        com.beans.User user = userRepository.findByUsernameAndPassword(username, password)
+        User user = userRepository.findByUsernameAndPassword(username, password)
                 .orElseThrow(() -> new UsernameNotFoundException("user not exist by username"));
 
         Set<SimpleGrantedAuthority> authoritySet = user.getRoles().stream()
@@ -36,7 +37,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.beans.User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user not exist by username"));
 
         Set<SimpleGrantedAuthority> authoritySet = user.getRoles().stream()

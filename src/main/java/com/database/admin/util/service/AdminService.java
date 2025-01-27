@@ -1,7 +1,7 @@
-package com.service;
+package com.database.admin.util.service;
 
-import com.beans.User;
-import com.repository.AdminRepository;
+import com.database.user.util.model.User;
+import com.database.admin.util.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

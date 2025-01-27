@@ -1,11 +1,8 @@
-package com.service;
+package com.database.auth.util.service;
 
-import com.beans.Role;
-import com.beans.User;
-import com.repository.RoleRepository;
-import com.repository.UserRepository;
-import exception.ContactAPIException;
-import org.springframework.http.HttpStatus;
+import com.database.user.util.model.User;
+import com.database.auth.util.repository.RoleRepository;
+import com.database.user.util.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,10 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class AuthService {
