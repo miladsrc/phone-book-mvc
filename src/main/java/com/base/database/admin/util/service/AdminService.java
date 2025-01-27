@@ -28,14 +28,14 @@ public class AdminService {
 //        return null;
 //    }
 
-    public UserDto saveUser(UserDto userDto) {
-        User user = modelMapper.map(userDto, User.class);
-        User savedUser = adminRepository.save(user);
-        return modelMapper.map(savedUser, UserDto.class);
-    }
-
-    public void deleteUser(Long id) {
-        adminRepository.deleteById(Math.toIntExact(id));
-    }
+//    public UserDto saveUser(UserDto userDto) {
+//        User user = modelMapper.map(userDto, User.class);
+//        User savedUser = adminRepository.save(user);
+//        return modelMapper.map(savedUser, UserDto.class);
+//    }
+//
+//    public void deleteUser(Long id) {
+//        adminRepository.deleteById(Math.toIntExact(id));
+//    }
 }
 

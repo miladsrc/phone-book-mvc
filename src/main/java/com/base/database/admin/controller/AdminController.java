@@ -27,16 +27,16 @@ public class AdminController {
 //        return ResponseEntity.ok(userDtos);
 //    }
 
-    @PostMapping("/user")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-        UserDto savedUserDto = adminService.saveUser(userDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDto);
-    }
-
-    @DeleteMapping("/user/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        adminService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping("/user")
+//    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+//        UserDto savedUserDto = adminService.saveUser(userDto);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDto);
+//    }
+//
+//    @DeleteMapping("/user/{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+//        adminService.deleteUser(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }
 

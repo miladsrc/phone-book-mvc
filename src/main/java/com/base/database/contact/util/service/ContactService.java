@@ -67,6 +67,12 @@ public class ContactService {
     public void deleteContactByUserId(Long contractId) {
         contactRepository.deleteById(contractId);
     }
+
+    public  List<ContactResponseDTO>  findUserContactByUserId(Long userId) {
+        return contactRepository.findContactByUserId(userId).stream()
+                .map(l -> modelMapper.map(l, ContactResponseDTO.class))
+                .collect(Collectors.toList());
+    }
 }
 
 

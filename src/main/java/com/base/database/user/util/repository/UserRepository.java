@@ -1,5 +1,6 @@
 package com.base.database.user.util.repository;
 
+import com.base.database.contact.util.dto.ContactNamePhoneProjection;
 import com.base.database.contact.util.model.Contact;
 import com.base.database.user.util.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,6 +21,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.firstName LIKE %:name% OR u.lastName LIKE %:name%")
     List<User> searchUserByFirstName(@Param("name") String name);
 
-    List<User> findContactListBy(Contact contact);
+    @Query("select c.name as name, c.phoneNumber phoneNumber " +
+            "from Contact c join User u on c.userId = u.id")
+    List<ContactNamePhoneProjection> findContactListById(Contact contact);
+
 }
 

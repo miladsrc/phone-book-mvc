@@ -1,17 +1,15 @@
 package com.base.database.user.controller;
 
 
+import com.base.database.contact.util.dto.ContactResponseDTO;
 import com.base.database.contact.util.service.ContactService;
 import com.base.database.security.model.service.JwtService;
-import com.base.database.user.util.dto.ContactResponseDTO;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -53,14 +51,14 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
-    Authentication
+
     @GetMapping("/user/me")
     public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        String username = jwtService.extractUsername(token);
-        List<ContactResponseDTO> contacts = contactService.(username);
+        Long usernameId = jwtService.extractUserId(token);
+        List<ContactResponseDTO> contacts = contactService.findUserContactByUserId(usernameId);
         return ResponseEntity.ok(contacts);
     }
 }
