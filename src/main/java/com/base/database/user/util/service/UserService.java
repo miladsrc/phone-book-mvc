@@ -1,5 +1,6 @@
 package com.base.database.user.util.service;
 
+import com.base.database.contact.util.dto.ContactNamePhoneDto;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.model.User;
@@ -38,9 +39,10 @@ public class UserService {
     }
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
-        User existingUser = userRepository.findById(id)
+        User existUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-        User existUser = modelMapper.map(userRequestDTO, User.class);
+        User updateUser = modelMapper.map(userRequestDTO, User.class);
+        updateUser.setId(existUser.getId());
         User updatedUser = userRepository.save(existUser);
         return modelMapper.map(updatedUser, UserResponseDTO.class);
     }
@@ -51,6 +53,7 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
+
     private UserResponseDTO mapToDTO(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
@@ -61,4 +64,5 @@ public class UserService {
                 .role(user.getRole())
                 .build();
     }
+
 }

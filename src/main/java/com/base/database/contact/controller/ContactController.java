@@ -29,43 +29,43 @@ public class ContactController {
     @GetMapping
     public ResponseEntity<List<ContactResponseDTO>> getContactsByToken(@RequestHeader("Authorization") String token) {
         String jwt = token.substring(7);
-        Long userId = jwtService.extractUserId(jwt);
-        List<ContactResponseDTO> contacts = contactService.findContactsByUserId(userId);
+        String username = jwtService.extractUsername(jwt);
+        List<ContactResponseDTO> contacts = contactService.findContactsByUsername(username);
         return ResponseEntity.ok(contacts);
     }
 
-    @PostMapping
-    public ResponseEntity<ContactResponseDTO> createContact(
-            @RequestHeader("Authorization") String token,
-            @RequestBody ContactRequestDTO contactRequestDTO) {
-        String jwt = token.substring(7);
-        Long userId = jwtService.extractUserId(jwt);
-        contactRequestDTO.setUserId(userId);
-        ContactResponseDTO createdContact = contactService.createContact(contactRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdContact);
-    }
-
-    @PutMapping("/{contactId}")
-    public ResponseEntity<ContactResponseDTO> updateContact(
-            @RequestHeader("Authorization") String token,
-            @PathVariable Long contactId,
-            @RequestBody ContactRequestDTO contactRequestDTO) {
-        String jwt = token.substring(7);
-        Long userId = jwtService.extractUserId(jwt);
-        contactRequestDTO.setUserId(userId);
-        ContactResponseDTO updatedContact = contactService.updateContact(contactId, contactRequestDTO);
-        return ResponseEntity.ok(updatedContact);
-    }
-
-    @DeleteMapping("/{contactId}")
-    public ResponseEntity<Void> deleteContact(
-            @RequestHeader("Authorization") String token,
-            @PathVariable Long contactId) {
-        String jwt = token.substring(7);
-        Long userId = jwtService.extractUserId(jwt);
-        contactService.deleteContactByUserId(contactId);
-        return ResponseEntity.noContent().build();
-    }
+//    @PostMapping
+//    public ResponseEntity<ContactResponseDTO> createContact(
+//            @RequestHeader("Authorization") String token,
+//            @RequestBody ContactRequestDTO contactRequestDTO) {
+//        String jwt = token.substring(7);
+//        Long userId = jwtService.extractUserId(jwt);
+//        contactRequestDTO.setUserId(userId);
+//        ContactResponseDTO createdContact = contactService.createContact(contactRequestDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(createdContact);
+//    }
+//
+//    @PutMapping("/{contactId}")
+//    public ResponseEntity<ContactResponseDTO> updateContact(
+//            @RequestHeader("Authorization") String token,
+//            @PathVariable Long contactId,
+//            @RequestBody ContactRequestDTO contactRequestDTO) {
+//        String jwt = token.substring(7);
+//        Long userId = jwtService.extractUserId(jwt);
+//        contactRequestDTO.setUserId(userId);
+//        ContactResponseDTO updatedContact = contactService.updateContact(contactId, contactRequestDTO);
+//        return ResponseEntity.ok(updatedContact);
+//    }
+//
+//    @DeleteMapping("/{contactId}")
+//    public ResponseEntity<Void> deleteContact(
+//            @RequestHeader("Authorization") String token,
+//            @PathVariable Long contactId) {
+//        String jwt = token.substring(7);
+//        Long userId = jwtService.extractUserId(jwt);
+//        contactService.deleteContactByUserId(contactId);
+//        return ResponseEntity.noContent().build();
+//    }
 }
 
 

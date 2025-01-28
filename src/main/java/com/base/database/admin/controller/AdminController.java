@@ -2,11 +2,15 @@ package com.base.database.admin.controller;
 
 
 import com.base.database.admin.util.service.AdminService;
+import com.base.database.security.model.service.JwtService;
+import com.base.database.user.util.dto.UserResponseDTO;
+import com.base.database.user.util.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -14,29 +18,40 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final AdminService adminService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, UserService userService, JwtService jwtService) {
         this.adminService = adminService;
+        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
-    //TODO: this method need to retrieve all users with contacts
-//    @GetMapping("/users")
-//    public ResponseEntity<List<UserDto>> getAllUsers() {
-//        List<UserDto> userDtos = adminService.findAllUsers();
-//        return ResponseEntity.ok(userDtos);
-//    }
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
 
-//    @PostMapping("/user")
-//    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
-//        UserDto savedUserDto = adminService.saveUser(userDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(savedUserDto);
-//    }
-//
-//    @DeleteMapping("/user/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-//        adminService.deleteUser(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    //the association is eager then contacts must fetch with dto itself
+    @GetMapping("/users/{id}/detail")
+    public ResponseEntity<UserResponseDTO> getUserDetail(@PathVariable("id")Long userId) {
+        return ResponseEntity.ok(userService.getUserById(userId));
+    }
+
+    @DeleteMapping("/users/{id}/delete")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    // Extract user ID from token
+    private Long extractUserIdFromToken(String token) {
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        return jwtService.extractUserId(token);
+    }
 }
 

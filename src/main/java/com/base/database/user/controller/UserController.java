@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -26,42 +25,35 @@ public class UserController {
     private final JwtService jwtService;
     private final ContactService contactService;
 
-    @GetMapping
-    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    @PutMapping("/me")
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestHeader("Authorization") String token, @RequestBody UserRequestDTO userRequestDTO) {
+        Long userId = extractUserIdFromToken(token);
+        return ResponseEntity.ok(userService.updateUser(userId, userRequestDTO));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
-        return new ResponseEntity<>(userService.createUser(userRequestDTO), HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
-        return ResponseEntity.ok(userService.updateUser(id, userRequestDTO));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String token) {
+        Long userId = extractUserIdFromToken(token);
+        userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/me")
+    @GetMapping("/me/contacts")
     public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
+        String username = jwtService.extractUsername(token);
+        List<ContactResponseDTO> contacts = contactService.findContactsByUsername(username);
+        return ResponseEntity.ok(contacts);
+    }
+
+    // Extract user ID from token
+    private Long extractUserIdFromToken(String token) {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        Long usernameId = jwtService.extractUserId(token);
-        List<ContactResponseDTO> contacts = contactService.findUserContactByUserId(usernameId);
-        return ResponseEntity.ok(contacts);
+        return jwtService.extractUserId(token);
     }
 }
+
 
 
 

@@ -20,22 +20,5 @@ public class AdminService {
         this.modelMapper = modelMapper;
     }
 
-//    public List<UserDto> findAllUsers() {
-////        List<Contact> contacts = adminRepository.getContacts();
-////        return contacts.stream()
-////                .map(user -> modelMapper.map(user, UserDto.class))
-////                .collect(Collectors.toList());
-//        return null;
-//    }
-
-//    public UserDto saveUser(UserDto userDto) {
-//        User user = modelMapper.map(userDto, User.class);
-//        User savedUser = adminRepository.save(user);
-//        return modelMapper.map(savedUser, UserDto.class);
-//    }
-//
-//    public void deleteUser(Long id) {
-//        adminRepository.deleteById(Math.toIntExact(id));
-//    }
 }
 

@@ -30,49 +30,49 @@ public class ContactService {
 
     //METHODS
 
-    public List<ContactResponseDTO> findContactsByUserId(Long userId) {
-        return contactRepository.findByUser(User.builder().id(userId).build())
+    public List<ContactResponseDTO> findContactsByUsername(String username) {
+        return contactRepository.findContactsByUsername(username)
                 .stream()
                 .map(contact -> modelMapper.map(contact, ContactResponseDTO.class))
                 .collect(Collectors.toList());
     }
-
-    public ContactResponseDTO createContact(ContactRequestDTO contactRequestDTO) {
-        Contact contact = modelMapper.map(contactRequestDTO, Contact.class);
-        Contact savedContact = contactRepository.save(contact);
-        return modelMapper.map(savedContact, ContactResponseDTO.class);
-    }
-
-    public ContactResponseDTO updateContact(Long contactId, ContactRequestDTO contactRequestDTO) {
-        Contact contact = contactRepository.findById(contactId)
-                .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
-        modelMapper.map(contactRequestDTO, contact); // Update fields in existing entity
-        Contact updatedContact = contactRepository.save(contact);
-        return modelMapper.map(updatedContact, ContactResponseDTO.class);
-    }
-
-    public void deleteContact(Long contactId) {
-        Contact contact = contactRepository.findById(contactId)
-                .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
-        contactRepository.delete(contact);
-    }
-
-    public List<ContactResponseDTO> findContactByUserId(Long userId) {
-        return contactRepository.findAll().stream()
-                .filter(contact -> contact.getUser().getId().equals(userId))
-                .map(contact -> modelMapper.map(contact, ContactResponseDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    public void deleteContactByUserId(Long contractId) {
-        contactRepository.deleteById(contractId);
-    }
-
-    public  List<ContactResponseDTO>  findUserContactByUserId(Long userId) {
-        return contactRepository.findContactByUserId(userId).stream()
-                .map(l -> modelMapper.map(l, ContactResponseDTO.class))
-                .collect(Collectors.toList());
-    }
+//
+//    public ContactResponseDTO createContact(ContactRequestDTO contactRequestDTO) {
+//        Contact contact = modelMapper.map(contactRequestDTO, Contact.class);
+//        Contact savedContact = contactRepository.save(contact);
+//        return modelMapper.map(savedContact, ContactResponseDTO.class);
+//    }
+//
+//    public ContactResponseDTO updateContact(Long contactId, ContactRequestDTO contactRequestDTO) {
+//        Contact contact = contactRepository.findById(contactId)
+//                .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
+//        modelMapper.map(contactRequestDTO, contact); // Update fields in existing entity
+//        Contact updatedContact = contactRepository.save(contact);
+//        return modelMapper.map(updatedContact, ContactResponseDTO.class);
+//    }
+//
+//    public void deleteContact(Long contactId) {
+//        Contact contact = contactRepository.findById(contactId)
+//                .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
+//        contactRepository.delete(contact);
+//    }
+//
+//    public List<ContactResponseDTO> findContactByUserId(Long userId) {
+//        return contactRepository.findAll().stream()
+//                .filter(contact -> contact.getUser().getId().equals(userId))
+//                .map(contact -> modelMapper.map(contact, ContactResponseDTO.class))
+//                .collect(Collectors.toList());
+//    }
+//
+//    public void deleteContactByUserId(Long contractId) {
+//        contactRepository.deleteById(contractId);
+//    }
+//
+//    public  List<ContactResponseDTO>  findUserContactByUserId(Long userId) {
+//        return contactRepository.findContactByUserId(userId).stream()
+//                .map(l -> modelMapper.map(l, ContactResponseDTO.class))
+//                .collect(Collectors.toList());
+//    }
 }
 
 
