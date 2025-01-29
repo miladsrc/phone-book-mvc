@@ -48,6 +48,7 @@ public class User implements UserDetails {
     @Column(name = "ROLE", nullable = false)
     private Role role;
 
+
     // CONSTRUCTOR
 
     public User(String firstName, String lastName, String username, String password, String email, Role role) {
