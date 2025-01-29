@@ -26,9 +26,9 @@ public class Contact {
     private String phoneNumber;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "USRE_ID_FK", nullable = false)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-//    @Column(name = "USER_ID_FK", insertable = false, updatable = false)
-//    private Long userId;
+    @Column(name = "USER_ID", insertable = false, updatable = false)
+    private Long userId;
 }

@@ -1,9 +1,10 @@
 package com.base.database.contact.util.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class ContactRequestDTO {
     private String name;

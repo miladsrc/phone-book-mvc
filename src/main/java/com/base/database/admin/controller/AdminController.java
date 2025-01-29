@@ -45,7 +45,6 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
-
     // Extract user ID from token
     private Long extractUserIdFromToken(String token) {
         if (token != null && token.startsWith("Bearer ")) {

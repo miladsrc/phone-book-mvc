@@ -38,12 +38,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/me/contacts")
-    public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
-        String username = jwtService.extractUsername(token);
-        List<ContactResponseDTO> contacts = contactService.findContactsByUsername(username);
-        return ResponseEntity.ok(contacts);
-    }
+//    @GetMapping("/me/contacts")
+//    public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
+//        String username = jwtService.extractUsername(token);
+//        List<ContactResponseDTO> contacts = contactService.findContactsByUsername(username);
+//        return ResponseEntity.ok(contacts);
+//    }
 
     // Extract user ID from token
     private Long extractUserIdFromToken(String token) {
