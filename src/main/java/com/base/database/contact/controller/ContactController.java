@@ -53,7 +53,6 @@ public class ContactController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdContact);
     }
 
-
     @PutMapping("/{contactId}")
     public ResponseEntity<ContactResponseDTO> updateContact(
             @RequestHeader("Authorization") String token,

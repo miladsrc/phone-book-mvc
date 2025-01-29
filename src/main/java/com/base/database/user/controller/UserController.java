@@ -6,8 +6,10 @@ import com.base.database.contact.util.service.ContactService;
 import com.base.database.security.model.service.JwtService;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
+import com.base.database.user.util.repository.UserRepository;
 import com.base.database.user.util.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,34 +26,48 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
     private final ContactService contactService;
+    private final UserRepository userRepository;
 
     @PutMapping("/me")
-    public ResponseEntity<UserResponseDTO> updateUser(@RequestHeader("Authorization") String token, @RequestBody UserRequestDTO userRequestDTO) {
-        Long userId = extractUserIdFromToken(token);
-        return ResponseEntity.ok(userService.updateUser(userId, userRequestDTO));
+    public ResponseEntity<UserResponseDTO> updateUser(@RequestHeader("Authorization") String token, @RequestBody UserRequestDTO userRequestDTO) throws ChangeSetPersister.NotFoundException {
+        String jwt = token.substring(7);
+        String username = jwtService.extractUsername(jwt);
+        Long userId = getUserIdByUsername(username);
+        UserResponseDTO userResponseDTO = userService.updateUser(userId, userRequestDTO);
+        return ResponseEntity.ok(userResponseDTO);
     }
 
     @DeleteMapping("/me")
-    public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String token) {
-        Long userId = extractUserIdFromToken(token);
+    public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
+        String jwt = token.substring(7);
+        String username = jwtService.extractUsername(jwt);
+        Long userId = getUserIdByUsername(username);
         userService.deleteUser(userId);
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/me/contacts")
-//    public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) {
-//        String username = jwtService.extractUsername(token);
-//        List<ContactResponseDTO> contacts = contactService.findContactsByUsername(username);
-//        return ResponseEntity.ok(contacts);
-//    }
-
-    // Extract user ID from token
-    private Long extractUserIdFromToken(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        return jwtService.extractUserId(token);
+    @GetMapping("/me/contacts")
+    public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
+        String jwt = token.substring(7);
+        String username = jwtService.extractUsername(jwt);
+        Long userId = getUserIdByUsername(username);
+        List<ContactResponseDTO> contacts = contactService.findContactsByUserId(userId);
+        return ResponseEntity.ok(contacts);
     }
+
+    //find user by username
+    public Long getUserIdByUsername(String username) throws ChangeSetPersister.NotFoundException {
+        return userRepository.findByUsername(username)
+                .map(user -> new UserResponseDTO(
+                        user.getId(),
+                        user.getFirstName(),
+                        user.getLastName(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getRole()))
+                .get().getId();
+    }
+
 }
 
 

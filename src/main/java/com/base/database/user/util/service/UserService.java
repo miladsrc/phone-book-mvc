@@ -7,6 +7,7 @@ import com.base.database.user.util.model.User;
 import com.base.database.user.util.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public List<UserResponseDTO> getAllUsers() {
         return userRepository
@@ -29,23 +30,66 @@ public class UserService {
     public UserResponseDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-        return modelMapper.map(user, UserResponseDTO.class);
+        return UserResponseDTO.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .build();
     }
 
     public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
-        User existingUser = modelMapper.map(userRequestDTO, User.class);
-        User savedUser = userRepository.save(existingUser);
-        return modelMapper.map(savedUser, UserResponseDTO.class);
+        String encodedPassword = passwordEncoder.encode(userRequestDTO.getPassword());
+        User user = User.builder()
+                .firstName(userRequestDTO.getFirstName())
+                .lastName(userRequestDTO.getLastName())
+                .username(userRequestDTO.getUsername())
+                .password(encodedPassword)
+                .email(userRequestDTO.getEmail())
+                .role(userRequestDTO.getRole())
+                .build();
+        User savedUser = userRepository.save(user);
+        return UserResponseDTO.builder()
+                .id(savedUser.getId())
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
+                .username(savedUser.getUsername())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole())
+                .build();
     }
 
     public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
-        User existUser = userRepository.findById(id)
+        User oldUser = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-        User updateUser = modelMapper.map(userRequestDTO, User.class);
-        updateUser.setId(existUser.getId());
-        User updatedUser = userRepository.save(existUser);
-        return modelMapper.map(updatedUser, UserResponseDTO.class);
+
+        String encodedPassword = (userRequestDTO.getPassword() != null) ?
+                passwordEncoder.encode(userRequestDTO.getPassword()) : oldUser.getPassword();
+
+        User updatedUser = User.builder()
+                .id(oldUser.getId())
+                .firstName(userRequestDTO.getFirstName())
+                .lastName(userRequestDTO.getLastName())
+                .username(userRequestDTO.getUsername())
+                .password(encodedPassword)
+                .email(userRequestDTO.getEmail())
+                .role(userRequestDTO.getRole())
+                .build();
+
+        User savedUser = userRepository.save(updatedUser);
+
+        return UserResponseDTO.builder()
+                .id(savedUser.getId())
+                .firstName(savedUser.getFirstName())
+                .lastName(savedUser.getLastName())
+                .username(savedUser.getUsername())
+                .email(savedUser.getEmail())
+                .role(savedUser.getRole())
+                .build();
     }
+
 
     public void deleteUser(Long id) {
         if (!userRepository.existsById(id)) {

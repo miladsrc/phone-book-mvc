@@ -48,6 +48,17 @@ public class User implements UserDetails {
     @Column(name = "ROLE", nullable = false)
     private Role role;
 
+    // CONSTRUCTOR
+
+    public User(String firstName, String lastName, String username, String password, String email, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
     // USER DETAILS METHODS
 
     @Override
@@ -89,4 +100,5 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
 }
