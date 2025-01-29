@@ -1,4 +1,4 @@
-package com.base.database.config;
+package com.base.database.conf;
 
 import com.base.database.security.model.service.JwtService;
 import jakarta.servlet.FilterChain;

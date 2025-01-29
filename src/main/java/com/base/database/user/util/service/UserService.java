@@ -1,12 +1,10 @@
 package com.base.database.user.util.service;
 
-import com.base.database.contact.util.dto.ContactNamePhoneDto;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.model.User;
 import com.base.database.user.util.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.base.database.config;
+package com.base.database.conf;
 
 
 import lombok.RequiredArgsConstructor;
