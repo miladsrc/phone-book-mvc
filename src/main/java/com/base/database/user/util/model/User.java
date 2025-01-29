@@ -3,6 +3,7 @@ package com.base.database.user.util.model;
 
 
 import com.base.database.security.bean.Role;
+import com.base.database.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +48,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "ROLE", nullable = false)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     // CONSTRUCTOR
 

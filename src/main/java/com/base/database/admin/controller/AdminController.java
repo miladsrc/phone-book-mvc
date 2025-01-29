@@ -17,13 +17,11 @@ import java.util.List;
 @DependsOn("adminRepository")
 public class AdminController {
 
-    private final AdminService adminService;
     private final UserService userService;
     private final JwtService jwtService;
 
     @Autowired
-    public AdminController(AdminService adminService, UserService userService, JwtService jwtService) {
-        this.adminService = adminService;
+    public AdminController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
     }
@@ -50,7 +48,8 @@ public class AdminController {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
-        return jwtService.extractUserId(token);
+        return jwtService.(token);
     }
+
 }
 
