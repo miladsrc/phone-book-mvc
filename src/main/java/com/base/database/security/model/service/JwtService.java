@@ -16,14 +16,14 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "+w0ErT95IJXW6k7RyltyxyONkhRdb9qN52ggpN40kSsGznrg9XjVNpRevFCpXgT5/9GJx9ab2lXfSDXbEX/chx+ripm0zGarF4G68oQKv3I=";
+    private static final String SECRET_KEY = "dpQF3LiU5qUA0T7MFV8q99VS0tKTat93uOBxJ9195X8lA0ntc/9G7R87X8/OzbhV";
     private static final long TOKEN_VALIDITY = 1000 * 60 * 60 * 10; // 10 hours
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractClaims(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaims(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -38,7 +38,8 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails)
+    {
         return generateToken(new HashMap<>(), userDetails);
     }
 
@@ -46,6 +47,7 @@ public class JwtService {
         final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .verifyWith(getSignInKey())
@@ -54,9 +56,10 @@ public class JwtService {
                 .getPayload();
     }
 
+
     //check if token is expired or not
     public boolean isTokenExpired(String token) {
-        return extractClaim(token, Claims::getExpiration).before(new Date());
+        return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 
     private SecretKey getSignInKey() {
@@ -65,7 +68,7 @@ public class JwtService {
     }
 
     public Long extractUserId(String token) {
-        return extractClaim(token, claims -> claims.get("id", Long.class));
+        return extractClaims(token, claims -> claims.get("id", Long.class));
     }
 
 }

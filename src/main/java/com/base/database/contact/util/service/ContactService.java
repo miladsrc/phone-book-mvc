@@ -6,7 +6,6 @@ import com.base.database.contact.util.model.Contact;
 import com.base.database.contact.util.repository.ContactRepository;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.repository.UserRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -23,13 +22,12 @@ public class ContactService {
 
     private final ContactRepository contactRepository;
     private final UserRepository userRepository;
-    private final ModelMapper modelMapper;
 
     @Autowired
-    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1, ModelMapper modelMapper) {
+    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1) {
         this.contactRepository = contactRepository;
         this.userRepository = userRepository1;
-        this.modelMapper = modelMapper;
+
     }
 
     //METHODS

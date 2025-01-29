@@ -7,7 +7,6 @@ import com.base.database.security.model.service.JwtService;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ public class ContactController {
 
     private final ContactService contactService;
     private final UserService userService;
-    private final ModelMapper modelMapper;
     private final JwtService jwtService;
 
     @GetMapping
