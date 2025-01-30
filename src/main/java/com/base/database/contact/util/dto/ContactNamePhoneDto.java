@@ -1,6 +1,11 @@
 package com.base.database.contact.util.dto;
 
-public interface ContactNamePhoneDto {
-    String getName();
-    String getPhoneNumber();
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class ContactNamePhoneDto {
+    private String name;
+    private String phoneNumber;
 }

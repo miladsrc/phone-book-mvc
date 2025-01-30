@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "+w0ErT95IJXW6k7RyltyxyONkhRdb9qN52ggpN40kSsGznrg9XjVNpRevFCpXgT5/9GJx9ab2lXfSDXbEX/chx+ripm0zGarF4G68oQKv3I=";
+    private static final String SECRET_KEY = "6182e221e734938459da67b7914dbbb4dd9d47eff9e9330c02978a49a05a399c";
     private static final long TOKEN_VALIDITY = 1000 * 60 * 60 * 10; // 10 hours
 
     public String extractUsername(String token) {
@@ -29,7 +29,8 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .claims(extraClaims)
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -46,8 +47,11 @@ public class JwtService {
         final String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
+
+    //maybe issue maker because of verify method
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        return Jwts
+                .parser()
                 .verifyWith(getSignInKey())
                 .build()
                 .parseSignedClaims(token)
