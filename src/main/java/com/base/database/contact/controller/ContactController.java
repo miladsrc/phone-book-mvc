@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/contacts")
+@RequestMapping("/api/contact")
 public class ContactController {
 
     private final ContactService contactService;
@@ -35,7 +36,8 @@ public class ContactController {
     }
 
     @GetMapping("/id")
-    public ResponseEntity<List<ContactResponseDTO>> getContactsByToken(@PathVariable("id") Long userId) throws ChangeSetPersister.NotFoundException {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ContactResponseDTO>> getContactsById(@PathVariable("id") Long userId) throws ChangeSetPersister.NotFoundException {
         List<ContactResponseDTO> contacts = contactService.findContactsByUserId(userId);
         return ResponseEntity.ok(contacts);
     }

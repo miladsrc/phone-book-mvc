@@ -6,12 +6,14 @@ import com.base.database.contact.util.model.Contact;
 import com.base.database.contact.util.repository.ContactRepository;
 import com.base.database.mapper.ContactModeMapper;
 import com.base.database.user.util.dto.UserResponseDTO;
+import com.base.database.user.util.model.User;
 import com.base.database.user.util.repository.UserRepository;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,8 @@ public class ContactService {
 
     public ContactResponseDTO createContact(ContactRequestDTO contactRequestDTO) {
         Contact contact = contactModeMapper.toEntity(contactRequestDTO);
+        User user = userRepository.findUserById(contactRequestDTO.getUserId());
+        contact.setUser(user);
         Contact savedContact = contactRepository.save(contact);
         return contactModeMapper.toResponseDTO(savedContact);
     }
@@ -52,6 +56,8 @@ public class ContactService {
         contact.setName(contactRequestDTO.getName());
         contact.setPhoneNumber(contactRequestDTO.getPhoneNumber());
         contact.setUserId(contactRequestDTO.getUserId());
+        User user = userRepository.findUserById(contactRequestDTO.getUserId());
+        contact.setUser(user);
         Contact updatedContact = contactRepository.save(contact);
         return contactModeMapper.toResponseDTO(updatedContact);
     }
