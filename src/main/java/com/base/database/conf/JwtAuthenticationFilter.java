@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@DependsOn("adminRepository")
+@DependsOn("userRepository")
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;

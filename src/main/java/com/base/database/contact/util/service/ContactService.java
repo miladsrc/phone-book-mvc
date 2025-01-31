@@ -4,6 +4,7 @@ import com.base.database.contact.util.dto.ContactRequestDTO;
 import com.base.database.contact.util.dto.ContactResponseDTO;
 import com.base.database.contact.util.model.Contact;
 import com.base.database.contact.util.repository.ContactRepository;
+import com.base.database.mapper.ContactModeMapper;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.repository.UserRepository;
 import org.springframework.context.annotation.DependsOn;
@@ -22,38 +23,27 @@ public class ContactService {
 
     private final ContactRepository contactRepository;
     private final UserRepository userRepository;
+    private final ContactModeMapper contactModeMapper;
 
     @Autowired
-    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1) {
+    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1, ContactModeMapper contactModeMapper) {
         this.contactRepository = contactRepository;
         this.userRepository = userRepository1;
+        this.contactModeMapper = contactModeMapper;
     }
 
     //METHODS
-
-    public List<ContactResponseDTO> findContactsByUserId(Long id) {
-        return contactRepository.findContactsByUserId(id)
+    public List<ContactResponseDTO> findContactsByUserId(Long userId) {
+        return contactRepository.findContactsByUserId(userId)
                 .stream()
-                .map(contact -> new ContactResponseDTO(contact.getId(),
-                        contact.getName(),
-                        contact.getPhoneNumber(),
-                        contact.getUserId()))
+                .map(contactModeMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
     public ContactResponseDTO createContact(ContactRequestDTO contactRequestDTO) {
-        Contact contact = Contact.builder()
-                .name(contactRequestDTO.getName())
-                .phoneNumber(contactRequestDTO.getPhoneNumber())
-                .userId(contactRequestDTO.getUserId())
-                .build();
+        Contact contact = contactModeMapper.toEntity(contactRequestDTO);
         Contact savedContact = contactRepository.save(contact);
-        return ContactResponseDTO.builder()
-                .id(savedContact.getId())
-                .name(savedContact.getName())
-                .phoneNumber(savedContact.getPhoneNumber())
-                .userId(savedContact.getUserId())
-                .build();
+        return contactModeMapper.toResponseDTO(savedContact);
     }
 
     public ContactResponseDTO updateContact(Long contactId, ContactRequestDTO contactRequestDTO) {
@@ -63,12 +53,7 @@ public class ContactService {
         contact.setPhoneNumber(contactRequestDTO.getPhoneNumber());
         contact.setUserId(contactRequestDTO.getUserId());
         Contact updatedContact = contactRepository.save(contact);
-        return ContactResponseDTO.builder()
-                .id(updatedContact.getId())
-                .name(updatedContact.getName())
-                .phoneNumber(updatedContact.getPhoneNumber())
-                .userId(updatedContact.getUserId())
-                .build();
+        return contactModeMapper.toResponseDTO(updatedContact);
     }
 
     public void deleteContact(Long contactId) {
@@ -77,11 +62,12 @@ public class ContactService {
         contactRepository.delete(contact);
     }
 
-    public void deleteContactByUserId(Long contractId) {
-        contactRepository.deleteById(contractId);
+    //TODO: create a method to delete contact bu id of the contact
+    public void deleteContactByUserId(Long userId) {
+        contactRepository.deleteById(userId);
     }
 
-    //find user by username
+    // find user by username
     public UserResponseDTO getUserByUsername(String username) throws ChangeSetPersister.NotFoundException {
         return userRepository.findByUsername(username)
                 .map(user -> new UserResponseDTO(

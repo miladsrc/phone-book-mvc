@@ -1,5 +1,6 @@
 package com.base.database.user.util.service;
 
+import com.base.database.mapper.UserModeMapper;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
 import com.base.database.user.util.model.User;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserModeMapper userModeMapper;
 
     public List<UserResponseDTO> getAllUsers() {
         return userRepository
@@ -22,33 +24,52 @@ public class UserService {
                 .map(this::mapToDTO)
                 .toList();
     }
-//
-//    public UserResponseDTO getUserById(Long id) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-//        return modelMapper.map(user, UserResponseDTO.class);
-//    }
-//
-//    public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
-//        User existingUser = modelMapper.map(userRequestDTO, User.class);
-//        User savedUser = userRepository.save(existingUser);
-//        return modelMapper.map(savedUser, UserResponseDTO.class);
-//    }
-//
-//    public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
-//        User existingUser = userRepository.findById(id)
-//                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
-//        User existUser = modelMapper.map(userRequestDTO, User.class);
-//        User updatedUser = userRepository.save(existUser);
-//        return modelMapper.map(updatedUser, UserResponseDTO.class);
-//    }
-//
-//    public void deleteUser(Long id) {
-//        if (!userRepository.existsById(id)) {
-//            throw new IllegalArgumentException("User with ID " + id + " not found");
-//        }
-//        userRepository.deleteById(id);
-//    }
+
+    public UserResponseDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
+        return userModeMapper.toResponseDTO(user, UserResponseDTO.class);
+    }
+
+    public UserResponseDTO createUser(UserRequestDTO userRequestDTO) {
+        User existingUser = userModeMapper.toEntity(userRequestDTO, User.class);
+        User savedUser = userRepository.save(existingUser);
+        return userModeMapper.toResponseDTO(savedUser, UserResponseDTO.class);
+    }
+
+    public UserResponseDTO updateUser(Long id, UserRequestDTO userRequestDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User with ID " + id + " not found"));
+        if (userRequestDTO.getFirstName() != null) {
+            existingUser.setFirstName(userRequestDTO.getFirstName());
+        }
+        if (userRequestDTO.getLastName() != null) {
+            existingUser.setLastName(userRequestDTO.getLastName());
+        }
+        if (userRequestDTO.getUsername() != null) {
+            existingUser.setUsername(userRequestDTO.getUsername());
+        }
+        if (userRequestDTO.getEmail() != null) {
+            existingUser.setEmail(userRequestDTO.getEmail());
+        }
+        if (userRequestDTO.getRole() != null) {
+            existingUser.setRole(userRequestDTO.getRole());
+        }
+        if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isEmpty()) {
+            existingUser.setPassword(userRequestDTO.getPassword()); // هش کردن رمز عبور را قبل از ذخیره انجام دهید
+        }
+        User updatedUser = userRepository.save(existingUser);
+        return userModeMapper.toResponseDTO(updatedUser, UserResponseDTO.class);
+    }
+
+
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("User with ID " + id + " not found");
+        }
+        userRepository.deleteById(id);
+    }
+
     private UserResponseDTO mapToDTO(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
