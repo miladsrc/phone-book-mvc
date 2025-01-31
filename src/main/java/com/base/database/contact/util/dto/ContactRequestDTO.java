@@ -9,5 +9,5 @@ import lombok.*;
 public class ContactRequestDTO {
     private String name;
     private String phoneNumber;
-    private Long userId; // ID of the associated user
+    private Long userId;
 }

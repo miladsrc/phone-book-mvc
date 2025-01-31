@@ -6,11 +6,11 @@ import com.base.database.contact.util.service.ContactService;
 import com.base.database.security.model.service.JwtService;
 import com.base.database.user.util.dto.UserRequestDTO;
 import com.base.database.user.util.dto.UserResponseDTO;
+import com.base.database.user.util.model.User;
 import com.base.database.user.util.repository.UserRepository;
 import com.base.database.user.util.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,20 +58,10 @@ public class UserController {
     //find user by username
     public Long getUserIdByUsername(String username) throws ChangeSetPersister.NotFoundException {
         return userRepository.findByUsername(username)
-                .map(user -> new UserResponseDTO(
-                        user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole()))
-                .get().getId();
+                .map(User::getId)
+                .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("test ok!");
-    }
 }
 
 

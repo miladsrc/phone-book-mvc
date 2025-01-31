@@ -63,9 +63,9 @@ public class ContactService {
     }
 
     //TODO: create a method to delete contact bu id of the contact
-    public void deleteContactByUserId(Long userId) {
-        contactRepository.deleteById(userId);
-    }
+//    public void deleteContactByUserId(Long userId) {
+//        contactRepository.deleteById(userId);
+//    }
 
     // find user by username
     public UserResponseDTO getUserByUsername(String username) throws ChangeSetPersister.NotFoundException {
