@@ -35,12 +35,6 @@ public class AdminController {
         return ResponseEntity.ok(userService.getUserById(userId));
     }
 
-    @DeleteMapping("/users/{id}/delete")
-    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
-    }
-
     private Long extractUserIdFromToken(String token) {
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);

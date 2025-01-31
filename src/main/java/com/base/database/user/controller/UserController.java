@@ -12,6 +12,7 @@ import com.base.database.user.util.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -37,16 +38,8 @@ public class UserController {
         return ResponseEntity.ok(userResponseDTO);
     }
 
-    @DeleteMapping("/me")
-    public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
-        String jwt = token.substring(7);
-        String username = jwtService.extractUsername(jwt);
-        Long userId = getUserIdByUsername(username);
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/me/contacts")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ContactResponseDTO>> getUserContacts(@RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {
         String jwt = token.substring(7);
         String username = jwtService.extractUsername(jwt);

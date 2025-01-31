@@ -13,11 +13,9 @@ import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 
 @DependsOn("contactRepository")
 @Service
@@ -67,11 +65,6 @@ public class ContactService {
                 .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
         contactRepository.delete(contact);
     }
-
-    //TODO: create a method to delete contact bu id of the contact
-//    public void deleteContactByUserId(Long userId) {
-//        contactRepository.deleteById(userId);
-//    }
 
     // find user by username
     public UserResponseDTO getUserByUsername(String username) throws ChangeSetPersister.NotFoundException {

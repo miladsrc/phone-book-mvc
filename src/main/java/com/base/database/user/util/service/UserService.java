@@ -62,14 +62,6 @@ public class UserService {
         return userModeMapper.toResponseDTO(updatedUser, UserResponseDTO.class);
     }
 
-
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User with ID " + id + " not found");
-        }
-        userRepository.deleteById(id);
-    }
-
     private UserResponseDTO mapToDTO(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
