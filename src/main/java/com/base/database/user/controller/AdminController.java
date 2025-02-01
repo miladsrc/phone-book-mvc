@@ -1,7 +1,6 @@
 package com.base.database.user.controller;
 
 
-import com.base.database.security.service.JwtService;
 import com.base.database.user.dto.UserResponseDTO;
 import com.base.database.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +16,10 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
-    private final JwtService jwtService;
 
     @Autowired
-    public AdminController(UserService userService, JwtService jwtService) {
+    public AdminController(UserService userService){
         this.userService = userService;
-        this.jwtService = jwtService;
     }
 
     @GetMapping("/users")
@@ -33,13 +30,6 @@ public class AdminController {
     @GetMapping("/users/{id}/detail")
     public ResponseEntity<UserResponseDTO> getUserDetail(@PathVariable("id")Long userId) {
         return ResponseEntity.ok(userService.getUserById(userId));
-    }
-
-    private Long extractUserIdFromToken(String token) {
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        return jwtService.extractUserId(token);
     }
 
 }

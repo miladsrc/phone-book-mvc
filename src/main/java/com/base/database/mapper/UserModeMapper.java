@@ -46,4 +46,5 @@ public class UserModeMapper {
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
     }
+
 }

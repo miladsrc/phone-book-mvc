@@ -5,6 +5,7 @@ import com.base.database.contact.dto.ContactResponseDTO;
 import com.base.database.contact.entity.Contact;
 import com.base.database.contact.repository.ContactRepository;
 import com.base.database.mapper.ContactModeMapper;
+import com.base.database.mapper.UserModeMapper;
 import com.base.database.user.dto.UserResponseDTO;
 import com.base.database.user.entity.User;
 import com.base.database.user.repository.UserRepository;
@@ -24,12 +25,14 @@ public class ContactService {
     private final ContactRepository contactRepository;
     private final UserRepository userRepository;
     private final ContactModeMapper contactModeMapper;
+    private final UserModeMapper userModeMapper;
 
     @Autowired
-    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1, ContactModeMapper contactModeMapper) {
+    public ContactService(ContactRepository contactRepository, UserRepository userRepository, UserRepository userRepository1, ContactModeMapper contactModeMapper, UserModeMapper userModeMapper) {
         this.contactRepository = contactRepository;
         this.userRepository = userRepository1;
         this.contactModeMapper = contactModeMapper;
+        this.userModeMapper = userModeMapper;
     }
 
     //METHODS
@@ -60,22 +63,10 @@ public class ContactService {
         return contactModeMapper.toResponseDTO(updatedContact);
     }
 
-    public void deleteContact(Long contactId) {
-        Contact contact = contactRepository.findById(contactId)
-                .orElseThrow(() -> new RuntimeException("Contact not found with ID: " + contactId));
-        contactRepository.delete(contact);
-    }
-
     // find user by username
     public UserResponseDTO getUserByUsername(String username) throws ChangeSetPersister.NotFoundException {
         return userRepository.findByUsername(username)
-                .map(user -> new UserResponseDTO(
-                        user.getId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getUsername(),
-                        user.getEmail(),
-                        user.getRole()))
+                .map(user -> userModeMapper.toResponseDTO(user, UserResponseDTO.class))
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
     }
 

@@ -22,13 +22,11 @@ import java.util.List;
 public class ContactController {
 
     private final ContactService contactService;
-    private final UserService userService;
     private final JwtService jwtService;
 
     @Autowired
-    public ContactController(ContactService contactService, UserService userService, JwtService jwtService) {
+    public ContactController(ContactService contactService, JwtService jwtService) {
         this.contactService = contactService;
-        this.userService = userService;
         this.jwtService = jwtService;
     }
 
