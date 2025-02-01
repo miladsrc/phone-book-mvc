@@ -1,7 +1,6 @@
-package com.base.database.contact.util.repository;
+package com.base.database.contact.repository;
 
-import com.base.database.contact.util.dto.ContactResponseDTO;
-import com.base.database.contact.util.model.Contact;
+import com.base.database.contact.entity.Contact;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

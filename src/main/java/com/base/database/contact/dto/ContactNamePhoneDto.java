@@ -1,4 +1,4 @@
-package com.base.database.contact.util.dto;
+package com.base.database.contact.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

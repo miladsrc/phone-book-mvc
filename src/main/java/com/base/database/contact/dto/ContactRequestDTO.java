@@ -1,14 +1,12 @@
-package com.base.database.contact.util.dto;
+package com.base.database.contact.dto;
 
 import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class ContactResponseDTO {
-    private Long id;
+@AllArgsConstructor
+public class ContactRequestDTO {
     private String name;
     private String phoneNumber;
     private Long userId;

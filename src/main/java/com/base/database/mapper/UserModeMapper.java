@@ -1,8 +1,8 @@
 package com.base.database.mapper;
 
-import com.base.database.user.util.dto.UserRequestDTO;
-import com.base.database.user.util.dto.UserResponseDTO;
-import com.base.database.user.util.model.User;
+import com.base.database.user.dto.UserRequestDTO;
+import com.base.database.user.dto.UserResponseDTO;
+import com.base.database.user.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component

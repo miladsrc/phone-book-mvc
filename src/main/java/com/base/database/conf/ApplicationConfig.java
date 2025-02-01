@@ -1,6 +1,6 @@
 package com.base.database.conf;
 
-import com.base.database.user.util.repository.UserRepository;
+import com.base.database.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableJpaRepositories(basePackages = {
-        "com.base.database.user.util.repository",
-        "com.base.database.contact.util.repository"
+        "com.base.database.user.repository",
+        "com.base.database.contact.repository"
 }
 )
 @EntityScan(basePackages = "com.base.database.security.model.entity")

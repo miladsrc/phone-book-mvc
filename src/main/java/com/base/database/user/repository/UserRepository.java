@@ -1,8 +1,8 @@
-package com.base.database.user.util.repository;
+package com.base.database.user.repository;
 
-import com.base.database.contact.util.dto.ContactNamePhoneDto;
-import com.base.database.contact.util.model.Contact;
-import com.base.database.user.util.model.User;
+import com.base.database.contact.dto.ContactNamePhoneDto;
+import com.base.database.contact.entity.Contact;
+import com.base.database.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

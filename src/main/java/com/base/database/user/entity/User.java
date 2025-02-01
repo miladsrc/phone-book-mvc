@@ -1,8 +1,8 @@
-package com.base.database.user.util.model;
+package com.base.database.user.entity;
 
 
 
-import com.base.database.security.bean.Role;
+import com.base.database.security.entity.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

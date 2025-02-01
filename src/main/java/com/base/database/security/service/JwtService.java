@@ -1,4 +1,4 @@
-package com.base.database.security.model.service;
+package com.base.database.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

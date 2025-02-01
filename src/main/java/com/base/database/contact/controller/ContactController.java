@@ -1,12 +1,12 @@
 package com.base.database.contact.controller;
 
-import com.base.database.contact.util.dto.ContactRequestDTO;
-import com.base.database.contact.util.dto.ContactResponseDTO;
-import com.base.database.contact.util.service.ContactService;
-import com.base.database.security.model.service.JwtService;
-import com.base.database.user.util.dto.UserResponseDTO;
-import com.base.database.user.util.service.UserService;
-import lombok.RequiredArgsConstructor;
+import com.base.database.contact.dto.ContactRequestDTO;
+import com.base.database.contact.dto.ContactResponseDTO;
+import com.base.database.contact.service.ContactService;
+import com.base.database.security.service.JwtService;
+import com.base.database.user.dto.UserResponseDTO;
+import com.base.database.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +18,19 @@ import java.util.List;
 
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/contact")
 public class ContactController {
 
     private final ContactService contactService;
     private final UserService userService;
     private final JwtService jwtService;
+
+    @Autowired
+    public ContactController(ContactService contactService, UserService userService, JwtService jwtService) {
+        this.contactService = contactService;
+        this.userService = userService;
+        this.jwtService = jwtService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ContactResponseDTO>> getContactsByToken(@RequestHeader("Authorization") String token) throws ChangeSetPersister.NotFoundException {

@@ -1,7 +1,7 @@
-package com.base.database.contact.util.model;
+package com.base.database.contact.entity;
 
 
-import com.base.database.user.util.model.User;
+import com.base.database.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,10 +1,10 @@
-package com.base.database.user.util.service;
+package com.base.database.user.service;
 
 import com.base.database.mapper.UserModeMapper;
-import com.base.database.user.util.dto.UserRequestDTO;
-import com.base.database.user.util.dto.UserResponseDTO;
-import com.base.database.user.util.model.User;
-import com.base.database.user.util.repository.UserRepository;
+import com.base.database.user.dto.UserRequestDTO;
+import com.base.database.user.dto.UserResponseDTO;
+import com.base.database.user.entity.User;
+import com.base.database.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +56,7 @@ public class UserService {
             existingUser.setRole(userRequestDTO.getRole());
         }
         if (userRequestDTO.getPassword() != null && !userRequestDTO.getPassword().isEmpty()) {
-            existingUser.setPassword(userRequestDTO.getPassword()); // هش کردن رمز عبور را قبل از ذخیره انجام دهید
+            existingUser.setPassword(userRequestDTO.getPassword());
         }
         User updatedUser = userRepository.save(existingUser);
         return userModeMapper.toResponseDTO(updatedUser, UserResponseDTO.class);

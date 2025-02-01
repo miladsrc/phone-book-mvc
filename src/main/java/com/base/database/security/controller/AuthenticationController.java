@@ -4,7 +4,7 @@ package com.base.database.security.controller;
 import com.base.database.security.controller.dto.AuthenticationRequest;
 import com.base.database.security.controller.dto.AuthenticationResponse;
 import com.base.database.security.controller.dto.RegisterRequest;
-import com.base.database.security.model.service.AuthenticationService;
+import com.base.database.security.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,13 +1,13 @@
-package com.base.database.security.model.service;
+package com.base.database.security.service;
 
 
 
-import com.base.database.user.util.model.User;
-import com.base.database.security.bean.Role;
+import com.base.database.user.entity.User;
+import com.base.database.security.entity.Role;
 import com.base.database.security.controller.dto.AuthenticationRequest;
 import com.base.database.security.controller.dto.AuthenticationResponse;
 import com.base.database.security.controller.dto.RegisterRequest;
-import com.base.database.user.util.repository.UserRepository;
+import com.base.database.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

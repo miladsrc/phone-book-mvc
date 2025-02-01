@@ -1,19 +1,17 @@
-package com.base.database.user.util.dto;
+package com.base.database.user.dto;
 
-import com.base.database.security.bean.Role;
+import com.base.database.security.entity.Role;
 import lombok.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class UserRequestDTO {
+public class UserResponseDTO {
 
+    private Long id;
     private String firstName;
     private String lastName;
     private String username;
-    private String password;
     private String email;
     private Role role;
 }

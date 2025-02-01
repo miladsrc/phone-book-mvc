@@ -1,13 +1,13 @@
-package com.base.database.contact.util.service;
+package com.base.database.contact.service;
 
-import com.base.database.contact.util.dto.ContactRequestDTO;
-import com.base.database.contact.util.dto.ContactResponseDTO;
-import com.base.database.contact.util.model.Contact;
-import com.base.database.contact.util.repository.ContactRepository;
+import com.base.database.contact.dto.ContactRequestDTO;
+import com.base.database.contact.dto.ContactResponseDTO;
+import com.base.database.contact.entity.Contact;
+import com.base.database.contact.repository.ContactRepository;
 import com.base.database.mapper.ContactModeMapper;
-import com.base.database.user.util.dto.UserResponseDTO;
-import com.base.database.user.util.model.User;
-import com.base.database.user.util.repository.UserRepository;
+import com.base.database.user.dto.UserResponseDTO;
+import com.base.database.user.entity.User;
+import com.base.database.user.repository.UserRepository;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;

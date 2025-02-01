@@ -1,9 +1,9 @@
 package com.base.database.user.controller;
 
 
-import com.base.database.security.model.service.JwtService;
-import com.base.database.user.util.dto.UserResponseDTO;
-import com.base.database.user.util.service.UserService;
+import com.base.database.security.service.JwtService;
+import com.base.database.user.dto.UserResponseDTO;
+import com.base.database.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.http.ResponseEntity;

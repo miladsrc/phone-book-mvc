@@ -1,9 +1,9 @@
 package com.base.database.mapper;
 
-import com.base.database.contact.util.dto.ContactNamePhoneDto;
-import com.base.database.contact.util.dto.ContactRequestDTO;
-import com.base.database.contact.util.dto.ContactResponseDTO;
-import com.base.database.contact.util.model.Contact;
+import com.base.database.contact.dto.ContactNamePhoneDto;
+import com.base.database.contact.dto.ContactRequestDTO;
+import com.base.database.contact.dto.ContactResponseDTO;
+import com.base.database.contact.entity.Contact;
 import org.springframework.stereotype.Component;
 
 @Component

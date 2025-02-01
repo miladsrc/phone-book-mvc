@@ -1,6 +1,6 @@
 package com.base.database.conf;
 
-import com.base.database.security.model.service.JwtService;
+import com.base.database.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
